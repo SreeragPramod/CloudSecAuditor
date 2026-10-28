@@ -7,13 +7,12 @@ function Test-AntivirusStatus {
 
     if ($antivirus) {
         foreach ($av in $antivirus) {
-            Write-Host "[PASS] Antivirus Found: $($av.displayName)" -ForegroundColor Green
+            Add-AuditResult -Check "Antivirus" -Item $av.displayName -Status "PASS" -Message "Antivirus Found: $($av.displayName)"
         }
     }
     else {
-        Write-Host "[FAIL] No Antivirus detected!" -ForegroundColor Red
+        Add-AuditResult -Check "Antivirus" -Item "None" -Status "FAIL" -Message "No Antivirus detected!"
     }
 }
 
-# Run the function
 Test-AntivirusStatus

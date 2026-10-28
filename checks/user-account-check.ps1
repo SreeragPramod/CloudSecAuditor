@@ -3,31 +3,25 @@
 function Test-UserAccounts {
     Write-Host "[*] Checking User Accounts..." -ForegroundColor Yellow
 
-    # Check 1: Is Guest account enabled?
     $guest = Get-LocalUser -Name "Guest" -ErrorAction SilentlyContinue
     if ($guest.Enabled -eq $true) {
-        Write-Host "[FAIL] Guest account is ENABLED! Attackers love this" -ForegroundColor Red
+        Add-AuditResult -Check "User Accounts" -Item "Guest" -Status "FAIL" -Message "Guest account is ENABLED! Attackers love this"
     }
     else {
-        Write-Host "[PASS] Guest account is disabled" -ForegroundColor Green
+        Add-AuditResult -Check "User Accounts" -Item "Guest" -Status "PASS" -Message "Guest account is disabled"
     }
 
-    # Check 2: How many admin accounts exist?
     $admins = Get-LocalGroupMember -Group "Administrators" -ErrorAction SilentlyContinue
     $adminCount = ($admins | Measure-Object).Count
 
-    Write-Host "[INFO] Found $adminCount Administrator account(s):" -ForegroundColor Yellow
-    foreach ($admin in $admins) {
-        Write-Host "       - $($admin.Name)" -ForegroundColor White
-    }
+    Add-AuditResult -Check "User Accounts" -Item "Admin Count" -Status "INFO" -Message "Found $adminCount Administrator account(s)"
 
     if ($adminCount -gt 2) {
-        Write-Host "[WARN] Too many admin accounts! Keep it minimal" -ForegroundColor Red
+        Add-AuditResult -Check "User Accounts" -Item "Admin Count" -Status "WARN" -Message "Too many admin accounts! Keep it minimal"
     }
     else {
-        Write-Host "[PASS] Admin account count looks good" -ForegroundColor Green
+        Add-AuditResult -Check "User Accounts" -Item "Admin Count" -Status "PASS" -Message "Admin account count looks good"
     }
 }
 
-# Run the function
 Test-UserAccounts

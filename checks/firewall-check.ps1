@@ -7,13 +7,12 @@ function Test-FirewallStatus {
 
     foreach ($profile in $profiles) {
         if ($profile.Enabled -eq $true) {
-            Write-Host "[PASS] $($profile.Name) Firewall is ON" -ForegroundColor Green
+            Add-AuditResult -Check "Firewall" -Item $profile.Name -Status "PASS" -Message "$($profile.Name) Firewall is ON"
         }
         else {
-            Write-Host "[FAIL] $($profile.Name) Firewall is OFF!" -ForegroundColor Red
+            Add-AuditResult -Check "Firewall" -Item $profile.Name -Status "FAIL" -Message "$($profile.Name) Firewall is OFF!"
         }
     }
 }
 
-# Run the function
 Test-FirewallStatus

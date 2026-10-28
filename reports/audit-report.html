@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>CloudSecAuditor Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #1a1a2e; color: #eee; }
+        h1 { color: #00d4ff; }
+        h2 { color: #a855f7; }
+        .summary { display: flex; gap: 20px; margin: 20px 0; }
+        .card { padding: 20px; border-radius: 10px; text-align: center; min-width: 120px; }
+        .pass { background: #064e3b; color: #34d399; }
+        .fail { background: #7f1d1d; color: #f87171; }
+        .warn { background: #78350f; color: #fbbf24; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #2d2d44; padding: 12px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #333; }
+        .status-PASS { color: #34d399; font-weight: bold; }
+        .status-FAIL { color: #f87171; font-weight: bold; }
+        .status-WARN { color: #fbbf24; font-weight: bold; }
+        .status-INFO { color: #60a5fa; font-weight: bold; }
+        footer { margin-top: 40px; color: #666; }
+    </style>
+</head>
+<body>
+    <h1>CloudSecAuditor Report</h1>
+    <p>Generated: 2026-10-29 00:33:50</p>
+    <p>Author: Sreerag</p>
+
+    <div class="summary">
+        <div class="card pass"><h2>12</h2>PASSED</div>
+        <div class="card fail"><h2>0</h2>FAILED</div>
+        <div class="card warn"><h2></h2>WARNINGS</div>
+    </div>
+
+    <h2>Detailed Results</h2>
+    <table>
+        <tr><th>Check</th><th>Item</th><th>Status</th><th>Message</th></tr><tr><td>Firewall</td><td>Domain</td><td class='status-PASS'>PASS</td><td>Domain Firewall is ON</td></tr>
+<tr><td>Firewall</td><td>Private</td><td class='status-PASS'>PASS</td><td>Private Firewall is ON</td></tr>
+<tr><td>Firewall</td><td>Public</td><td class='status-PASS'>PASS</td><td>Public Firewall is ON</td></tr>
+<tr><td>Open Ports</td><td>21 (FTP)</td><td class='status-PASS'>PASS</td><td>Port 21 (FTP) is closed</td></tr>
+<tr><td>Open Ports</td><td>23 (Telnet)</td><td class='status-PASS'>PASS</td><td>Port 23 (Telnet) is closed</td></tr>
+<tr><td>Open Ports</td><td>445 (SMB)</td><td class='status-WARN'>WARN</td><td>Port 445 (SMB) is OPEN!</td></tr>
+<tr><td>Open Ports</td><td>3389 (RDP)</td><td class='status-PASS'>PASS</td><td>Port 3389 (RDP) is closed</td></tr>
+<tr><td>Open Ports</td><td>5985 (WinRM)</td><td class='status-PASS'>PASS</td><td>Port 5985 (WinRM) is closed</td></tr>
+<tr><td>Antivirus</td><td>Windows Defender</td><td class='status-PASS'>PASS</td><td>Antivirus Found: Windows Defender</td></tr>
+<tr><td>Antivirus</td><td>McAfee</td><td class='status-PASS'>PASS</td><td>Antivirus Found: McAfee</td></tr>
+<tr><td>User Accounts</td><td>Guest</td><td class='status-PASS'>PASS</td><td>Guest account is disabled</td></tr>
+<tr><td>User Accounts</td><td>Admin Count</td><td class='status-INFO'>INFO</td><td>Found 2 Administrator account(s)</td></tr>
+<tr><td>User Accounts</td><td>Admin Count</td><td class='status-PASS'>PASS</td><td>Admin account count looks good</td></tr>
+<tr><td>RDP</td><td>Remote Desktop</td><td class='status-PASS'>PASS</td><td>Remote Desktop is disabled</td></tr>
+    </table>
+    <footer><p>CloudSecAuditor v1.0 | github.com/SreeragPramod/CloudSecAuditor</p></footer>
+</body>
+</html>

@@ -3,7 +3,6 @@
 function Test-OpenPorts {
     Write-Host "[*] Checking for risky open ports..." -ForegroundColor Yellow
 
-    # List of ports that are risky if open
     $riskyPorts = @(
         @{ Port = 21;   Name = "FTP" },
         @{ Port = 23;   Name = "Telnet" },
@@ -19,13 +18,12 @@ function Test-OpenPorts {
         $connection = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue
 
         if ($connection) {
-            Write-Host "[WARN] Port $port ($name) is OPEN!" -ForegroundColor Red
+            Add-AuditResult -Check "Open Ports" -Item "$port ($name)" -Status "WARN" -Message "Port $port ($name) is OPEN!"
         }
         else {
-            Write-Host "[PASS] Port $port ($name) is closed" -ForegroundColor Green
+            Add-AuditResult -Check "Open Ports" -Item "$port ($name)" -Status "PASS" -Message "Port $port ($name) is closed"
         }
     }
 }
 
-# Run the function
 Test-OpenPorts

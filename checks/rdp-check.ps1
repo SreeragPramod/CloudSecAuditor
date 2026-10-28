@@ -6,23 +6,20 @@ function Test-RDPStatus {
     $rdpEnabled = Get-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -ErrorAction SilentlyContinue
 
     if ($rdpEnabled.fDenyTSConnections -eq 0) {
-        Write-Host "[WARN] Remote Desktop is ENABLED!" -ForegroundColor Red
-        Write-Host "       Attackers can try to brute-force RDP" -ForegroundColor Red
+        Add-AuditResult -Check "RDP" -Item "Remote Desktop" -Status "WARN" -Message "Remote Desktop is ENABLED!"
 
-        # Check if NLA is required (extra security layer)
         $nla = Get-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -ErrorAction SilentlyContinue
 
         if ($nla.UserAuthentication -eq 1) {
-            Write-Host "[PASS] NLA (Network Level Authentication) is required" -ForegroundColor Green
+            Add-AuditResult -Check "RDP" -Item "NLA" -Status "PASS" -Message "NLA (Network Level Authentication) is required"
         }
         else {
-            Write-Host "[FAIL] NLA is NOT required! Anyone can see the login screen" -ForegroundColor Red
+            Add-AuditResult -Check "RDP" -Item "NLA" -Status "FAIL" -Message "NLA is NOT required! Anyone can see login screen"
         }
     }
     else {
-        Write-Host "[PASS] Remote Desktop is disabled" -ForegroundColor Green
+        Add-AuditResult -Check "RDP" -Item "Remote Desktop" -Status "PASS" -Message "Remote Desktop is disabled"
     }
 }
 
-# Run the function
 Test-RDPStatus
