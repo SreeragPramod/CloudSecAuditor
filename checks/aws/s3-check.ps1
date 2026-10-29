@@ -4,7 +4,6 @@ function Test-AWSS3Security {
     Write-Host "[*] Auditing AWS S3 Storage Buckets..." -ForegroundColor Yellow
 
     try {
-        # Get list of all S3 buckets in this AWS account
         $buckets = Get-S3Bucket
 
         if ($null -eq $buckets -or $buckets.Count -eq 0) {
@@ -18,22 +17,18 @@ function Test-AWSS3Security {
             $name = $bucket.BucketName
 
             # Check if Public Access Block is enabled
-            $blockConfig = Get-S3PublicAccessBlock -BucketName $name -ErrorAction SilentlyContinue
+            $blockConfig = Get-S3PublicAccessBlock -BucketName $name -Region "ap-southeast-2" -ErrorAction SilentlyContinue
 
             if ($blockConfig) {
-                $isBlocked = $blockConfig.PublicAccessBlockConfiguration.BlockPublicAcls -and
-                             $blockConfig.PublicAccessBlockConfiguration.BlockPublicPolicy
-
-                if ($isBlocked) {
-                    Add-AuditResult -Check "AWS S3" -Item $name -Status "PASS" -Message "Bucket '$name' has Public Access BLOCKED"
+                if ($blockConfig.BlockPublicAcls -eq $true -and $blockConfig.BlockPublicPolicy -eq $true) {
+                    Add-AuditResult -Check "AWS S3" -Item "$name" -Status "PASS" -Message "Bucket '$name' has Public Access BLOCKED"
                 }
                 else {
-                    Add-AuditResult -Check "AWS S3" -Item $name -Status "WARN" -Message "Bucket '$name' might allow public access!"
+                    Add-AuditResult -Check "AWS S3" -Item "$name" -Status "WARN" -Message "Bucket '$name' might allow public access!"
                 }
             }
             else {
-                # If no block config exists, it might be exposed
-                Add-AuditResult -Check "AWS S3" -Item $name -Status "FAIL" -Message "Bucket '$name' has NO Public Access Block configured!"
+                Add-AuditResult -Check "AWS S3" -Item "$name" -Status "WARN" -Message "Bucket '$name' has NO Public Access Block configured!"
             }
         }
     }
