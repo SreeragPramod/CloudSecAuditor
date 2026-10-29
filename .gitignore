@@ -1,0 +1,10 @@
+# Credentials and sensitive caches
+*.key
+*.pem
+credentials.json
+.aws/
+
+# Temporary / OS files
+Thumbs.db
+Desktop.ini
+*.tmp
